@@ -1,36 +1,69 @@
 /* The DDD Cargo sample application modeled in CML. Note that we split the application into multiple bounded contexts. */
-ContextMap DDDSampleMap {
-	contains CargoBookingContext
-	contains VoyagePlanningContext
-	contains LocationContext
+ContextMap DesignAndPlanningContextMap {
+    contains Assemblies
+    contains Tools
+    contains Materials
+    contains Machines
+    contains CutttingData
+    contains NcCodes
+    contains OperationPlans
+    contains ToolRecommendations
+
+	// contains CargoBookingContext
+	// contains VoyagePlanningContext
+	// contains LocationContext
+
+    Assemblies [D] <- [U, OHS, PL] Tools
+	Assemblies [P] <-> [P] ToolRecommendations
+	Assemblies [D, C] <- [U, S] CutttingData
+    ToolRecommendations [D] <- [U, OHS, PL] Tools
+	ToolRecommendations [D] <- [U, OHS, PL] Materials
+	ToolRecommendations [D] <- [U, OHS, PL] Machines
+    NcCodes [D] <- [U, OHS, PL] Tools
+	CutttingData [D] <- [U, OHS, PL] Materials
+	CutttingData [D] <- [U, OHS, PL] Machines
+	OperationPlans [D, C] <- [U, S] CutttingData
+	OperationPlans [D] <- [U, OHS, PL] Materials
+	OperationPlans [D] <- [U, OHS, PL] Machines
+	OperationPlans [D, C] <- [U, S] Assemblies
 
 	/* As Evans mentions in his book (Bounded Context chapter): The voyage planning can be seen as
 	 * separated bounded context. However, it still shares code with the booking application (CargoBookingContext).
 	 * Thus, they are in a 'Shared-Kernel' relationship.
 	 */
-	CargoBookingContext [SK]<->[SK] VoyagePlanningContext
+	// CargoBookingContext [SK]<->[SK] VoyagePlanningContext
 
 	/* Note that the splitting of the LocationContext is not mentioned in the original DDD sample of Evans.
 	 * However, locations and the management around them, can somehow be seen as a separated concept which is used by other
 	 * bounded contexts. But this is just an example, since we want to demonstrate our DSL with multiple bounded contexts.
 	 */
-	CargoBookingContext [D]<-[U,OHS,PL] LocationContext
+	// CargoBookingContext [D]<-[U,OHS,PL] LocationContext
 
-	VoyagePlanningContext [D]<-[U,OHS,PL] LocationContext
+	// VoyagePlanningContext [D]<-[U,OHS,PL] LocationContext
 
 }
 
 /* The original booking application context */
-BoundedContext CargoBookingContext {
-	
-}
+// BoundedContext CargoBookingContext {}
 
 /* We split the Voyage Planning into a separate bounded context as Evans proposes it in his book. */
-BoundedContext VoyagePlanningContext {
-	
-}
+// BoundedContext VoyagePlanningContext {}
 
 /* Separate bounded context for managing the locations. */
-BoundedContext LocationContext {
-	
-}
+// BoundedContext LocationContext {}
+
+BoundedContext Assemblies {}
+
+BoundedContext Tools {}
+
+BoundedContext Materials {}
+
+BoundedContext Machines {}
+
+BoundedContext CutttingData {}
+
+BoundedContext NcCodes {}
+
+BoundedContext OperationPlans {}
+
+BoundedContext ToolRecommendations {}
