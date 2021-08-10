@@ -31,6 +31,7 @@ ContextMap DesignAndPlanningContextMap {
 	OperationPlans [D] <- [U, OHS, PL] Materials
 	OperationPlans [D] <- [U, OHS, PL] Machines
 	OperationPlans [D, C] <- [U, S] Assemblies
+	OperationPlans [D, C] <- [U, S] ToolRecommendations
 
 	/* As Evans mentions in his book (Bounded Context chapter): The voyage planning can be seen as
 	 * separated bounded context. However, it still shares code with the booking application (CargoBookingContext).
